@@ -71,25 +71,20 @@ it; the same dialog imports it on another device. Clearing site data erases it, 
 
 ## Telegram notifications
 
-Every time she receives a gift, a Telegram bot can message you: which task she solved, which gift she got and
-her overall progress.
-
-The repository is public, so the bot token is never stored in it. `tools/notify-setup.mjs` encrypts the token and
-your chat id with a random key (AES-256-GCM). The encrypted file (`assets/js/data/notify-box.js`) is published;
-the key travels only inside a private link and stays in her browser.
+Every time she receives a gift, a Telegram bot messages you: which task she solved, which gift she got and her
+overall progress. It works on its own; she does not need to do anything.
 
 ```bash
 TG_TOKEN=<bot token from @BotFather> TG_CHAT=<your numeric chat id> node tools/notify-setup.mjs
 git add assets/js/data/notify-box.js && git commit -m "Notifications" && git push
 ```
 
-The command saves the private link to `.private/notify-link.txt` (not committed). Send her that link once; after
-she opens it, the key is stored in that browser and removed from the address bar, and the bot confirms with a
-message. A new device or cleared site data needs the link again. Messages that fail to send are kept and retried
-on her next visit. Running the command again makes a new key and invalidates the old link. To turn notifications
-off, put `export default null;` back into `notify-box.js`.
-
-Anyone who has the private link can read the bot token, so treat the link like a password.
+The bot details are stored in `assets/js/data/notify-box.js`, lightly scrambled so that automated scanners do not
+pick them up. That is not protection: the repository is public, and someone who reads the code can recover the
+token. The worst they can do is send messages through the bot or change it; if that ever happens, get a new token
+from @BotFather and run the command again. Messages that fail to send are kept and retried on her next visit.
+Anyone who solves a task on the site (you included) triggers a message too.
+To turn notifications off, replace the contents of `notify-box.js` with `export default null;`.
 
 ## Editing or adding tasks
 
