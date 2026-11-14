@@ -2,11 +2,11 @@
 import { reducedMotion } from './util.js';
 
 const PALETTE = {
-  hearts: ['#F0849F', '#F0624A', '#FFB088', '#FF9DB5', '#E8588A'],
-  petals: ['#FFC2D1', '#F9A8C0', '#FFE3A1', '#F7B8E0', '#FFFFFF'],
-  sparkles: ['#FFE3A1', '#FFFFFF', '#FFB088', '#C7B8FF'],
-  confetti: ['#F0624A', '#FFE3A1', '#8FE3C4', '#C7B8FF', '#F0849F', '#7FB6FF'],
-  stars: ['#FFE3A1', '#FFFFFF', '#FFD27A', '#C7B8FF'],
+  hearts: ['#FF8FA6', '#FFB3C4', '#F26D8D', '#FFD6DF', '#A6DBFC'],
+  petals: ['#FFD3DE', '#FFFFFF', '#B6F1DA', '#DCEEFB', '#FFB3C4'],
+  sparkles: ['#FFFFFF', '#A6DBFC', '#8CE5C1', '#F6DDA6'],
+  confetti: ['#7CC8F8', '#8CE5C1', '#FFFFFF', '#F6DDA6', '#FF8FA6', '#B6F1DA'],
+  stars: ['#8CE5C1', '#FFFFFF', '#A6DBFC', '#B6F1DA'],
 };
 const SHAPE = { hearts: 'heart', petals: 'petal', sparkles: 'spark', confetti: 'rect', stars: 'spark' };
 

@@ -2,20 +2,22 @@
 // каждая решённая задача зажигает звезду, а чем дальше по курсу, тем ближе рассвет.
 import { seeded, icons, esc } from './util.js';
 
-// Цвета неба (верх, середина, горизонт) для доли пройденного курса
+// Цвета неба (верх, середина, горизонт) для доли пройденного курса.
+// Небо всегда остаётся тёмным: с прогрессом над горизонтом разгорается мятно-голубой рассвет.
 const STOPS = [
-  [0.00, '#100D25', '#1C163F', '#2A2056'],
-  [0.25, '#15113A', '#2A1F5C', '#4A2F73'],
-  [0.50, '#1D1A54', '#4A2F7E', '#A2507F'],
-  [0.75, '#2C3788', '#8B5AA6', '#F08A7B'],
-  [1.00, '#6FA4EC', '#F4B7B0', '#FFDF9E'],
+  [0.00, '#050608', '#080B10', '#0D141B'],
+  [0.25, '#050709', '#0A1017', '#111F2A'],
+  [0.50, '#06080C', '#0C1620', '#16313F'],
+  [0.75, '#070A10', '#102131', '#1F5160'],
+  [1.00, '#080D15', '#143247', '#3A8C8E'],
 ];
 const HILLS = [
-  [0.00, '#1B1640', '#130F2E'],
-  [0.50, '#33235F', '#211846'],
-  [0.75, '#5B3F86', '#3A2A6A'],
-  [1.00, '#8E7BC4', '#5F4D9C'],
+  [0.00, '#0E1217'],
+  [0.50, '#101A21'],
+  [1.00, '#13262C'],
 ];
+// Зажжённые звёзды — её цветами
+const STAR_COLORS = ['#8CE5C1', '#A6DBFC', '#FFFFFF', '#7CC8F8', '#B6F1DA'];
 
 const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
 const mix = (a, b, t) => {
@@ -29,7 +31,6 @@ function sample(stops, p, col) {
   const t = Math.min(1, Math.max(0, (p - a[0]) / (b[0] - a[0])));
   return mix(a[col], b[col], t);
 }
-const luminance = c => { const [r, g, b] = hex(c).map(v => v / 255); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
 
 /**
  * Рисует небо в элементе.
@@ -45,13 +46,11 @@ export function renderSky(el, tasks) {
   el.style.setProperty('--sky-mid', mid);
   el.style.setProperty('--sky-bot', bot);
   el.style.setProperty('--hill-far', sample(HILLS, p, 1));
-  el.style.setProperty('--hill-near', sample(HILLS, p, 2));
   el.style.setProperty('--night', String(Math.max(0, 1 - p * 1.25).toFixed(3)));
   el.style.setProperty('--sun', String(Math.max(0, (p - 0.35) / 0.65).toFixed(3)));
-  // стриж летит над холмами слева направо — ниже текста, чтобы его не закрывать
+  // птица летит над холмами слева направо — ниже текста, чтобы его не закрывать
   el.style.setProperty('--bird-x', `${(30 + p * 56).toFixed(2)}%`);
   el.style.setProperty('--bird-lift', (0.5 + Math.sin(p * Math.PI) * 0.5).toFixed(3));
-  el.classList.toggle('is-day', luminance(mix(top, mid, 0.5)) > 0.5);
 
   const rnd = seeded(20261113);
   const stars = tasks.map((t, i) => {
@@ -61,7 +60,7 @@ export function renderSky(el, tasks) {
     const size = 7 + rnd() * 9;
     const delay = (rnd() * 5).toFixed(2);
     return t.solved
-      ? `<span class="star is-lit" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%;--size:${size.toFixed(1)}px;--d:${delay}s" title="${esc(t.title)}">${icons.star}</span>`
+      ? `<span class="star is-lit" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%;--size:${size.toFixed(1)}px;--d:${delay}s;--c:${STAR_COLORS[i % STAR_COLORS.length]}" title="${esc(t.title)}">${icons.star}</span>`
       : `<span class="star" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%"></span>`;
   }).join('');
 
