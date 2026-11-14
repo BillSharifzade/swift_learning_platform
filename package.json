@@ -1,0 +1,11 @@
+{
+  "name": "bonnies-learning-platform",
+  "private": true,
+  "type": "module",
+  "description": "Bonnie's Learning Platform — интерактивный курс Swift",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "validate": "node tools/validate.mjs",
+    "serve": "python3 -m http.server 4173"
+  }
+}
