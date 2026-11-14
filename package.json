@@ -3,9 +3,11 @@
   "private": true,
   "type": "module",
   "description": "Bonnie's Learning Platform — интерактивный курс Swift",
+  "homepage": "https://billsharifzade.github.io/swift_learning_platform/",
   "scripts": {
     "build": "node tools/build.mjs",
     "validate": "node tools/validate.mjs",
-    "serve": "python3 -m http.server 4173"
+    "serve": "python3 -m http.server 4173",
+    "notify-setup": "node tools/notify-setup.mjs"
   }
 }

@@ -7,6 +7,7 @@ import { renderDescription, renderMarkdown, renderSafe, renderSafeInline, highli
 import { judge } from '../engine/judge.js';
 import { createRunner } from '../engine/runner.js';
 import { revealGifts } from '../ui/gift-reveal.js';
+import { notifyGifts } from '../notify.js';
 
 const run = createRunner(config.compiler);
 
@@ -486,6 +487,7 @@ export async function mountTask(root, id) {
       const fg = gifts.final();
       if (store.addGift({ key: fg.key, kind: 'final', ref: 'course' })) queue.push(fg);
     }
+    notifyGifts({ taskTitle: ex.title, moduleTitle: mod.title, index: meta.indexInModule + 1, count: mod.exercises.length, gifts: queue, solved: store.solvedCount(), total: course.total });
     let praise = '';
     if (first && attempts === 1 && hintsUsed === 0) praise = 'С первой попытки и без подсказок.';
     else if (first && hintsUsed === 0) praise = 'Без единой подсказки.';

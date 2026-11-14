@@ -6,6 +6,7 @@ import { mountHome } from './views/home.js';
 import { mountTask } from './views/task.js';
 import { mountGifts } from './views/gifts.js';
 import { h, esc, toast, icons } from './ui/util.js';
+import { installNotifyKey, flushNotifications } from './notify.js';
 
 const root = document.getElementById('app');
 let cleanup = () => {};
@@ -127,6 +128,8 @@ window.addEventListener('hashchange', route);
 
 (async function boot() {
   document.title = `${config.title} — ${config.tagline}`;
+  installNotifyKey(); // до первого перехода: ключ из личной ссылки сразу убирается из адреса
+  flushNotifications();
   try {
     await loadCourse();
   } catch (e) {
